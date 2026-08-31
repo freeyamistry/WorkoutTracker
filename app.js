@@ -174,16 +174,10 @@
         const weightTrend = bodyWeightTrend(state.selectedDate);
 
         todayView.innerHTML = `
-            <div class="workout-heading">
-                <h1 id="today-title">Workout</h1>
-            </div>
-
             <div class="workspace-grid">
-                <section class="panel workout-panel" aria-labelledby="workout-heading">
+                <section class="panel workout-panel" aria-label="Workout session">
                     <div class="panel-heading">
-                        <div>
-                            <h2 id="workout-heading">${selectedSets.length ? "Session in motion" : "Plan your session"}</h2>
-                        </div>
+                        ${selectedSets.length ? `<h2>Session in motion</h2>` : ""}
                         <div class="date-control">
                             <button class="date-arrow" type="button" data-action="shift-date" data-days="-1" aria-label="Previous day">
                                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 6-6 6 6 6"/></svg>
@@ -340,38 +334,31 @@
         const selected = trained.find((exercise) => exercise.id === state.progressExerciseId);
 
         progressView.innerHTML = `
-            <div class="progress-heading">
-                <h1 id="progress-title">Progress</h1>
-            </div>
-            <div class="progress-controls">
-                <div class="routine-tabs progress-routine-tabs" role="tablist" aria-label="Progress routine">
-                    ${CATEGORIES.map((category) => `
-                        <button type="button" class="routine-tab ${state.progressRoutine === category ? "is-active" : ""}"
-                            data-progress-routine="${category}" role="tab" aria-selected="${state.progressRoutine === category}">${category}</button>
-                    `).join("")}
-                </div>
-                <label class="search-wrap">
-                    <span hidden>Search ${state.progressRoutine.toLowerCase()} exercises</span>
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m16 16 4 4"/></svg>
-                    <input id="progress-search" class="search-input" type="search" placeholder="Find an exercise" value="${escapeAttribute(state.progressSearch)}">
-                </label>
-            </div>
-            ${trained.length ? `
-                <div class="progress-layout">
-                    <section class="panel progress-section" aria-labelledby="progress-exercises-title">
+            <div class="progress-layout">
+                <section class="panel progress-section" aria-label="Progress details">
+                    <div class="progress-controls">
+                        <div class="routine-tabs progress-routine-tabs" role="tablist" aria-label="Progress routine">
+                            ${CATEGORIES.map((category) => `
+                                <button type="button" class="routine-tab ${state.progressRoutine === category ? "is-active" : ""}"
+                                    data-progress-routine="${category}" role="tab" aria-selected="${state.progressRoutine === category}">${category}</button>
+                            `).join("")}
+                        </div>
+                        <label class="search-wrap">
+                            <span hidden>Search ${state.progressRoutine.toLowerCase()} exercises</span>
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m16 16 4 4"/></svg>
+                            <input id="progress-search" class="search-input" type="search" placeholder="Find an exercise" value="${escapeAttribute(state.progressSearch)}">
+                        </label>
+                    </div>
+                    ${trained.length ? `
                         <div class="progress-browser">
-                            <div class="progress-list-header">
-                                <h2 id="progress-exercises-title">${state.progressRoutine}</h2>
-                                <span>${trained.length} exercise${trained.length === 1 ? "" : "s"}</span>
-                            </div>
                             <div class="progress-list">
                                 ${trained.map(renderProgressExercise).join("")}
                             </div>
                         </div>
                         ${renderProgressDetail(selected)}
-                    </section>
-                </div>
-            ` : `<div class="panel progress-empty">${state.progressSearch ? "No exercises match your search in this routine." : `Log some ${state.progressRoutine.toLowerCase()} sets and your progress will show up here.`}</div>`}
+                    ` : `<div class="progress-empty">${state.progressSearch ? "No exercises match your search in this routine." : `Log some ${state.progressRoutine.toLowerCase()} sets and your progress will show up here.`}</div>`}
+                </section>
+            </div>
         `;
     }
 
@@ -387,7 +374,7 @@
 
     function exerciseIconMarkup(exercise) {
         const path = EXERCISE_ICON_PATHS[exercise.name.toLowerCase()];
-        if (path) return `<img src="${escapeAttribute(path)}?v=2" alt="" draggable="false">`;
+        if (path) return `<img src="${escapeAttribute(path)}?v=3" alt="" draggable="false">`;
         return `<svg viewBox="0 0 24 24"><path d="M6 8v8M3 10v4m15-6v8m3-6v4M6 12h12"/></svg>`;
     }
 
@@ -466,9 +453,6 @@
 
         calendarView.innerHTML = `
             <div class="calendar-wrap">
-                <div class="calendar-heading">
-                    <h1 id="calendar-title">Training calendar</h1>
-                </div>
                 <section class="calendar-card" aria-labelledby="calendar-month-label">
                     <div class="calendar-toolbar">
                         <button type="button" class="calendar-arrow" data-action="shift-month" data-months="-1" aria-label="Previous month">
